@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI</title>
+    <style>
+        body {
+            background-color: #ffe1f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 10px 10px 10px;
+        }
+
+        .logo {
+            display: flex;
+            height: 70px;
+            width: 70px;
+        }
+
+        .menu {
+            display: flex;
+            width: 50%;
+            justify-content: center;
+        }
+
+        .main {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .main li {
+            list-style: none;
+            cursor: pointer;
+        }
+
+        .seperator {
+            height: 100px;
+            width: 100%;
+        }
+
+        .maintext {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 500px;
+            gap: 20px;
+        }
+
+        .chat {
+            display: flex;
+            height: 50px;
+            width: 50%;
+            border: 0.2px solid peachpuff;
+            border-radius: 50px;
+            padding-left: 20px;
+        }
+
+        #send {
+            border: 0.2px solid peachpuff;
+            border-radius: 20px;
+            margin-left: 2px;
+            margin-top: 0px;
+            font-size: 13px;
+            padding: 10px 10px 10px 10px;
+        }
+
+        .res {
+            background-color: whitesmoke;
+            overflow: scroll;
+            border: 0.3px solid peachpuff;
+            border-radius: 15px;
+            height: 100%;
+            padding: 8px 8px 8px 8px ;
+            width: 80%;
+        }
+
+        .umsg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: sticky;
+        }
+
+        .snd {
+            display: flex;
+            cursor: pointer;
+            justify-content: left;
+        }
+
+        .b {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cont">
+        <div class="navbar">
+            <div class="logo">
+                <img src="/assets/artificial-intelligence-ai-processor-chip-icon-symbol-for-graphic-design-logo-website-social-media-mobile-app-ui-illustration-vector.png"
+                    alt="AIlogo">
+            </div>
+            <div class="menu">
+                <ul class="main">
+                    <li>HOME</li>
+                    <li>ABOUT</li>
+                    <li>MORE</li>
+                </ul>
+            </div>
+            <div class="butt">
+                <button class="b" id="b1">Login</button>
+                <button class="b" id="b2">Sign Up</button>
+            </div>
+        </div>
+        <div class="seperator"></div>
+        <div class="maintext" id="chatbox">
+            <!-- New addition -->
+            <div class="res">
+                <div class="r"></div>
+            </div>
+            <div class="umsg">
+                <input type="text" class="chat" id="userinput" placeholder="Start your text here">
+                <button class="snd" id="send" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("b1").addEventListener("click", function (event) {
+            window.location.href = "login"
+        })
+        document.getElementById("b2").addEventListener("click", function (event) {
+            window.location.href = "signup"
+        })
+        document.getElementById("userinput").addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+
+
+        // Chatbot Physics
+
+        function sendMessage() {
+            var userMessage = document.getElementById("userinput").value;
+            if (!userMessage.trim()) return;
+
+            fetch("http://127.0.0.1:5001/chat", {
+                method: "POST",
+                body: JSON.stringify({ message: userMessage }),
+                headers: { "Content-Type": "application/json" }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    let botReply = data.reply
+                        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')   // bold: **text** → <b>text</b>
+                        .replace(/\*(.*?)\*/g, '<i>$1</i>')       // italic: *text* → <i>text</i>
+                        .replace(/\n/g, '<br>');                  // newline: \n → <br>
+                    document.querySelector(".r").innerHTML += "<p><b>You:</b> " + userMessage + "</p>";
+                    document.querySelector(".r").innerHTML += "<p><b>Bot:</b> " + botReply + "</p>";
+                    document.getElementById("userinput").value = "";
+                    document.querySelector(".res").scrollTop = document.querySelector(".res").scrollHeight;
+                });
+        }
+
+    </script>
+</body>
+
+</html>
