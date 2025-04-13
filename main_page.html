@@ -160,7 +160,7 @@
             var userMessage = document.getElementById("userinput").value;
             if (!userMessage.trim()) return;
 
-            fetch("https://ai-chatbot-2io2.onrender.com", {
+            fetch("https://ai-chatbot-2io2.onrender.com/chat", {
                 method: "POST",
                 body: JSON.stringify({ message: userMessage }),
                 headers: { "Content-Type": "application/json" }
