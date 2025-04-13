@@ -23,7 +23,7 @@ app.get('/signup', (req, res) => {
 });
 
 // Chatbot API route (Forwards to Flask)
-const FLASK_API_URL = "http://localhost:5001/chat";
+const FLASK_API_URL = "https://ai-chatbot-2io2.onrender.com";
 
 app.post('/chat', async (req, res) => {
     try {
