@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
 
 # Set your Gemini API Key
-genai.configure(api_key="AIzaSyCShjJfSgtqGMMnqC73g094mLScv1L4bHA")
+genai.configure(api_key="apikey")
 
 @app.route('/chat', methods=['POST'])
 def chat():
